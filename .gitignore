@@ -1,2 +1,7 @@
 *.user
 *~
+Release/**
+Debug/**
+plsbuild.mk
+plsbuild.txt
+

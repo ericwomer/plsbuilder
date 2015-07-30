@@ -2,6 +2,9 @@
 /*
  * TODO: Put the files in a singleton class(?) and/or have it auto close if open when leaving scope(?)
  * or watch more Bjourne Strousup (I hope I spelled his name correctly) and Bo Qain videos.
+ *
+ * TODO: Either get rid off -f, --files altogether and make it defaulet that the last options are files
+ * or find a way to add files in the middle of a parameter list.
  */
 
 namespace rake {
@@ -99,7 +102,8 @@ int builder::main (std::vector<std::string> &params) {
                 file_test.close();
             } // End test to see if file already exists.
 
-
+            // Close the file.
+            file_test.close();
 
         }  else if (*i == "--files" || *i == "-f") {
             // parse list of files here.
