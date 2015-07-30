@@ -19,6 +19,8 @@ public: // methods
     virtual int main(std::vector<std::string> &params);
     virtual int size(void) { return sizeof(this); };
     virtual std::string name(void) { return app_name; };
+    virtual void help(void);
+    virtual void setAppName(std::string name);
 private: // methods
     int writePlaylist();
 private: // vars

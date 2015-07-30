@@ -1,4 +1,8 @@
 #include "builder.h"
+/*
+ * TODO: Put the files in a singleton class(?) and/or have it auto close if open when leaving scope(?)
+ * or watch more Bjourne Strousup (I hope I spelled his name correctly) and Bo Qain videos.
+ */
 
 namespace rake {
 
@@ -22,8 +26,7 @@ int writeFile(std::string &filename, std::string &contents) {
     return 0;
 }
 
-builder::builder() :
-    app_name("PlsBuilder")
+builder::builder()
 {
     app_description.push_back(std::string("This is a simple mpv playlist builder \n"));
     app_description.push_back(std::string("** nothing else follows ** \n"));
@@ -47,18 +50,58 @@ int builder::main (std::vector<std::string> &params) {
     // iterate through params to remove the -- from the text
     for (std::vector<std::string>::const_iterator i = params.begin() ; i != params.end(); ++i) {
 
-        if (*i == "--help" || *i == "-H") {
+        if (*i == "--help" || *i == "-h") {
             actions.push_back("help");
-        } else if (*i == "--verbose" || *i == "-V") {
+        } else if (*i == "--verbose" || *i == "-v") {
             actions.push_back("verbose");
-        } else if (*i == "--version") {
+        } else if (*i == "--version" || *i == "-V") {
             actions.push_back("version");
-        }  else if (*i == "--playlist") {
+        }  else if (*i == "--playlist" || *i == "-f") {
+
+            // used to verify that the file does not already exist
+            // and if so asks weather its ok to overwrite
+            std::ifstream file_test;
+
             // the playlist file to save to
             // actions.push_back("playlist");
             ++i;
+
+            // Incase some how the file is open before we opened it?
+            if(file_test.is_open()){
+                file_test.close();
+            }
+
             file_name.append(*i);
-        }  else if (*i == "--files") {
+
+            // Test to see if the file already exists.
+            file_test.open(file_name);
+
+            if(file_test.is_open()){
+
+                std::string answer = "";
+                std::cout << "File already exists.\nDo you want to overwrite? [Y/n] ";
+                while(std::getline(std::cin, answer)){
+                    if(answer == "n" || answer == "N" || answer == "no"){
+                        std::cerr << "Please rerun the app with the file name you want." << std::endl;
+                        file_test.close();
+                        return -1;
+                    }
+                    else if(answer == "y" || answer == "Y" || answer == "yes" || answer.empty()){
+                        break;
+                    }
+                    else{
+                        std::cout << "Sorry unrecognized answer, please choose yes(y, default) or no(n)." << std::endl;
+                        std::cout << "File already exists.\nDo you want to overwrite? [Y/n] ";
+                        continue; // Somehow this works?
+                    }
+                }
+
+                file_test.close();
+            } // End test to see if file already exists.
+
+
+
+        }  else if (*i == "--files" || *i == "-f") {
             // parse list of files here.
             // for the time being must be at end of parmlist before the actually files
             ++i;
@@ -74,10 +117,7 @@ int builder::main (std::vector<std::string> &params) {
 
     for (auto &c : actions) { // handle all the prameters
         if (c == "help"){
-            std::cout << "Help for " << app_name << std::endl;
-            std::cout << "--help -H : print this help message and exit the program" << std::endl;
-            std::cout << "--verbose -V : print out all the valid command line parameters" << std::endl;
-            std::cout << "               passed to the program" << std::endl;
+            help();
             return 0; // exit the app
 
         } else if (c == "verbose") {
@@ -88,7 +128,7 @@ int builder::main (std::vector<std::string> &params) {
             std::cout << std::endl;
             return 0;
         } else if (c == "version") {
-            std::cout << 00 << "." << 00 << "." << 01 << std::endl; // create a version builder class??
+            std::cout << app_name << " " << 00 << "." << 00 << "." << 01 << std::endl; // create a version builder class??
             return 0;
         }
         else {
@@ -130,7 +170,7 @@ int builder::writePlaylist(){
         ++fileNumber;
     }
 
-    fileContents += "Version=2";
+    fileContents += "Version=2\n";
 
     if(!file_name.empty()){
         return writeFile(file_name, fileContents);
@@ -141,5 +181,18 @@ int builder::writePlaylist(){
     return 0;
 }
 
+void builder::help(void) {
+    std::cout << "Usage: " << app_name << " [options] files..." << std::endl;
+    std::cout << " -h, --help \t\t Print this help message and exit the program." << std::endl;
+    std::cout << " -v, --verbose \t\t Print out all the valid command line parameters" << std::endl;
+    std::cout << " \t\t\t passed to the program." << std::endl;
+    std::cout << " -p, --playlis <file> \t The name of the playlist <file>." << std::endl;
+    std::cout << " -f, --files <files> \t The list of <files> saved to the playlist file, must be last switch." << std::endl;
+    std::cout << " -V, --version \t\t Print the version and exit." << std::endl;
+}
+
+void builder::setAppName(std::string name){
+    app_name = name;
+}
 
 } // rake
