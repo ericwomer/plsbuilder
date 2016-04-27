@@ -186,13 +186,14 @@ int builder::writePlaylist(){
 }
 
 void builder::help(void) {
-    std::cout << "Usage: " << app_name << " [options] files..." << std::endl;
-    std::cout << " -h, --help \t\t Print this help message and exit the program." << std::endl;
-    std::cout << " -v, --verbose \t\t Print out all the valid command line parameters" << std::endl;
-    std::cout << " \t\t\t passed to the program." << std::endl;
-    std::cout << " -p, --playlis <file> \t The name of the playlist <file>." << std::endl;
-    std::cout << " -f, --files <files> \t The list of <files> saved to the playlist file, must be last switch." << std::endl;
-    std::cout << " -V, --version \t\t Print the version and exit." << std::endl;
+    std::cout << "Usage: " << app_name << " [options] files...\n\n";
+    std::cout << "Options: \n"
+    std::cout << " -h, --help \t\t Print this help message and exit the program.\n";
+    std::cout << " -v, --verbose \t\t Print out all the valid command line parameters\n";
+    std::cout << " \t\t\t passed to the program.\n";
+    std::cout << " -p, --playlis <file> \t The name of the playlist <file>.\n";
+    std::cout << " -f, --files <files> \t The list of <files> saved to the playlist file, must be last switch.\n";
+    std::cout << " -V, --version \t\t Print the version and exit.\n";
 }
 
 void builder::setAppName(std::string name){

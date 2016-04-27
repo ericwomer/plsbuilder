@@ -6,3 +6,7 @@ plsbuild.mk
 plsbuild.txt
 
 *-pre1
+*.orig
+
+.codelite/
+Makefile
