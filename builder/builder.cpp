@@ -149,7 +149,7 @@ int builder::main (int argv, char *argc[]) {
     // Start here if there are params
     std::vector<std::string> params;
 
-    app_name = argc[0];
+    setAppName(argc[0]);
 
     for(int i = 1; i != argv; ++i){
         params.push_back(argc[i]);
