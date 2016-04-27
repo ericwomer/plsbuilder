@@ -187,7 +187,7 @@ int builder::writePlaylist(){
 
 void builder::help(void) {
     std::cout << "Usage: " << app_name << " [options] files...\n\n";
-    std::cout << "Options: \n"
+    std::cout << "Options: \n";
     std::cout << " -h, --help \t\t Print this help message and exit the program.\n";
     std::cout << " -v, --verbose \t\t Print out all the valid command line parameters\n";
     std::cout << " \t\t\t passed to the program.\n";
