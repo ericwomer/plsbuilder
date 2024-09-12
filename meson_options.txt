@@ -1,0 +1,7 @@
+option(
+  'use-mold',
+  type: 'boolean',
+  value: false,
+  description: 'Use mold linker',
+)
+  
